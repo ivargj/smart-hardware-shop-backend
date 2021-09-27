@@ -1,11 +1,10 @@
 package io.recruitment.assessment.api.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import io.recruitment.assessment.api.domain.Product;
+import io.recruitment.assessment.api.services.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -15,13 +14,25 @@ public class ProductController {
 
     static final String URL = "/products";
 
+    private final ProductService productService;
+
+    @Autowired
+    public ProductController(final ProductService productService) {
+        this.productService = productService;
+    }
+
     @GetMapping
-    List<Map<String, String>> getProduts() {
-        return Collections.singletonList(Map.of("product", "Hi there!"));
+    List<Product> getProducts() {
+        return productService.getProducts();
     }
 
     @GetMapping("{id}")
-    Map<String, String> getProdut(@PathVariable long id) {
+    Map<String, String> getProduct(@PathVariable long id) {
         return Map.of("product", "Hi there!");
+    }
+
+    @PostMapping
+    Product createProduct(@RequestBody final Product product) {
+        return productService.createProduct(product);
     }
 }
