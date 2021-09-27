@@ -1,12 +1,12 @@
 package io.recruitment.assessment.api.controllers;
 
 import io.recruitment.assessment.api.domain.Product;
+import io.recruitment.assessment.api.exception.ProductNotFoundException;
 import io.recruitment.assessment.api.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(ProductController.URL)
@@ -27,8 +27,8 @@ public class ProductController {
     }
 
     @GetMapping("{id}")
-    Map<String, String> getProduct(@PathVariable long id) {
-        return Map.of("product", "Hi there!");
+    Product getProduct(@PathVariable long id) {
+        return productService.getProduct(id).orElseThrow(ProductNotFoundException::new);
     }
 
     @PostMapping

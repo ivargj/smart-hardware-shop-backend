@@ -14,8 +14,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.Optional;
+
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -50,12 +53,17 @@ class ProductControllerTest {
 
         @Test
         void getProdut_returnsOk() throws Exception {
+            returnProduct();
             mockMvc.perform(get(ProductController.URL + "/123")).andExpect(status().isOk());
         }
 
         @Test
         void getProdutWithInvalidNumber_returnsBadRequest() throws Exception {
             mockMvc.perform(get(ProductController.URL + "/1B3")).andExpect(status().isBadRequest());
+        }
+
+        void returnProduct() {
+            when(productService.getProduct(anyLong())).thenReturn(Optional.of(Product.aProduct().description("Blah").build()));
         }
     }
 

@@ -8,30 +8,46 @@ import java.io.Serializable;
 
 @JsonDeserialize(builder = Product.Builder.class)
 @Entity
+@Table(name = "products")
 public class Product implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private String description;
 
-    private Product(long id, String description) {
+    private Double price;
+
+    private Product(Long id, String description, Double price) {
         this.id = id;
-        this.description = description;
+        this.setDescription(description);
+        this.setPrice(price);
     }
 
     public Product() {
         // JPA
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public static Builder aProduct() {
@@ -40,8 +56,10 @@ public class Product implements Serializable {
 
     @JsonPOJOBuilder(withPrefix = "")
     public static final class Builder {
-        private long id;
+
+        private Long id;
         private String description;
+        private Double price;
 
         private Builder() {
         }
@@ -56,8 +74,13 @@ public class Product implements Serializable {
             return this;
         }
 
+        public Builder price(Double price) {
+            this.price = price;
+            return this;
+        }
+
         public Product build() {
-            return new Product(id, description);
+            return new Product(id, description, price);
         }
     }
 }
