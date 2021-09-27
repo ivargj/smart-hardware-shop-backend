@@ -11,4 +11,3 @@ it supports POST and GET. GET /products will get all products and GET products/{
 docker-compose up -d
 ```
 
-Good luck!
